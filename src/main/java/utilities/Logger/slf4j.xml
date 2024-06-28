@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="com.epam.ta.reportportal.log4j.appender">
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%t] %-5level %logger{36} - %msg%n%throwable"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <logger name="org.apache.hc.client5.http" level="WARN" />
+        <logger name="io.github.bonigarcia" level="WARN"/>
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FILE" />
+        </Root>
+    </Loggers>
+</Configuration>

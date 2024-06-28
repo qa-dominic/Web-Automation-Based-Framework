@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SHOP" thread-count="6" >
+    <listeners>
+        <listener class-name="utilities.ExtentReport.ExtentReporter" />
+        <listener class-name="utilities.RetryAnalyzer.RetryTransformer"/>
+    </listeners>
+
+    <test name="SHOP">
+        <parameter name="browser" value="chrome">
+            <classes>
+                <class name="MLshopBuilders.actual.LoginT">
+                </class>
+                <class name="MLshopBuilders.actual.Cart">
+                </class>
+                <class name="MLshopBuilders.actual.Home">
+                </class>
+            </classes>
+        </parameter>
+    </test>
+</suite>

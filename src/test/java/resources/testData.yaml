@@ -1,0 +1,29 @@
+Roles:
+  - role: admin
+    gmail_email: ml-tg-qa-team@mlhuillier.com
+    gmail_password: "Mlinc1234a@"
+
+  - role: supportadmin
+    gmail_email: francis.mercado@mlhuillier.com
+    gmail_password: "321Andrie!"
+
+  - role: merchant
+    gmail_email: jasper.malubay@mlhuillier.com
+    gmail_password: "123456789"
+
+  - role: invalidEmailAdmin
+    gmail_email: ml-tg-qa-team.com
+    gmail_password: "Mlinc1234a@"
+
+  - role: invalidPassAdmin
+    gmail_email: ml-tg-qa-team@mlhuillier.com
+    gmail_password: "Mlinc"
+
+  - role: noInput
+    gmail_email: ""
+    gmail_password: ""
+
+Users: [09999999999, 09999999998, 09999999997, 09999999996, 09999999934]
+
+
+

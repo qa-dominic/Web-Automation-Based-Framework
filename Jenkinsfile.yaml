@@ -1,0 +1,30 @@
+pipeline:
+  agent: any
+  stages:
+    - stage: Build
+      steps:
+        - bat: "mvn clean install"
+    - stage: Test
+      steps:
+        - bat: "mvn test -DfileName=test.xml"
+      post:
+        always:
+          junit:
+            allowEmptyResults: true
+            testResults: '**/surefire-reports/*.xml'
+        success:
+          publishHTML:
+            allowMissing: false
+            alwaysLinkToLastBuild: false
+            keepAll: false
+            reportDir: 'Reports'
+            reportFiles: 'Spark.html'
+            reportName: 'ExtentReport'
+            reportTitles: ''
+            useWrapperFileDirectly: true
+
+  post:
+    always:
+      archiveArtifacts:
+        artifacts: '**/target/*.jar'
+        followSymlinks: false
