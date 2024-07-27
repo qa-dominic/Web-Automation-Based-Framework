@@ -18,4 +18,15 @@ public class Login_PageObjects {
     public WebElement verifyMobile_Text(){
         return getDriver().findElement(By.xpath("//h3[normalize-space()='Please verify your mobile number']"));
     }
+
+    public WebElement loginToKpx_Button(){
+        return getDriver().findElement(By.className("btn d-block w-100 text-light"));
+    }
+
+    public WebElement loginToKpx_Button2(){
+        return getDriver().findElement(By.cssSelector("[method='post']"));
+    }
+    public WebElement LOGINGOOGLE_button2(){
+        return getDriver().findElement(By.cssSelector("[role='button']"));
+    }
 }

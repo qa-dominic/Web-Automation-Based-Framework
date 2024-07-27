@@ -6,6 +6,11 @@ import test_manager.base_test.BaseTest;
 
 public class LoginT extends BaseTest {
 
+    @Test(priority = 0, description = "Validate Login as User")
+    public void login() throws Exception {
+        loginSteps.clickLoginToKpx();
+    }
+
     // @Test(priority = 0, description = "Validate Login as User")
     // public  void Login() throws Exception{
     //     loginSteps.login();

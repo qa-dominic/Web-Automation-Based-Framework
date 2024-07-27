@@ -9,11 +9,8 @@ import utilities.Driver.DriverType;
 import utilities.Logger.LoggingUtils;
 
 public class BaseTest {
-    // protected Login_Steps loginSteps;
-    // protected Home_Steps homeSteps;
-    // protected Shipping_Steps shippingSteps;
-    // protected Cart_Steps cartSteps;
-
+    
+    protected Login_Steps loginSteps;
 
     @Parameters("browser")
     @BeforeClass (alwaysRun = true)
@@ -22,16 +19,14 @@ public class BaseTest {
             throw new IllegalArgumentException("Browser parameter cannot be null or empty");
         }
         LoggingUtils.info("base test browser type: "+browser.toUpperCase());
-//        initializeDriver(DriverType.valueOf("REMOTE_CHROME"));
-        initializeDriver(DriverType.valueOf(browser.toUpperCase()));
+       initializeDriver(DriverType.valueOf("REMOTE_CHROME"));
+        // initializeDriver(DriverType.valueOf(browser.toUpperCase()));
         getDriver().manage().deleteAllCookies();
         Thread.sleep(3000);
         getDriver().get(System.getProperty("targetUrl"));
         LoggingUtils.info("Redirecting back to home");
-        // loginSteps = new Login_Steps();
-        // homeSteps = new Home_Steps();
-        // shippingSteps = new Shipping_Steps();
-        // cartSteps = new Cart_Steps();
+        
+        loginSteps = new Login_Steps();
     }
     private void initializeDriver(DriverType driverType) {
         createDriver(driverType);

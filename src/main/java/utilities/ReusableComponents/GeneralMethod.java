@@ -19,20 +19,23 @@ import org.testng.Assert;
 import static utilities.Driver.DriverManager.getDriver;
 
 public class GeneralMethod extends ExtentReporter{
-    protected final WebDriver driver = getDriver();
+    protected final WebDriver driver;
     private final WebDriverWait wait;
-    public final yamlReader reader = new yamlReader();
+    public final yamlReader reader;
     private JavascriptExecutor js;
-    protected final Actions actions = new Actions(driver);
+    protected final Actions actions;
 
-    public GeneralMethod(){
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    protected GeneralMethod(){
+        this.driver = getWebDriver();
+        this.reader = new yamlReader();
+        this.js = (JavascriptExecutor) driver;
+        this.actions = new Actions(driver);
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
     
     public void click(WebElement locator, String elementName){
         try {
-            if (isDisplayed(locator)) {
+            if (isVisible(locator, elementName)){ 
                 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
                 LoggingUtils.info("Clicked on element: " + elementName);
                 ExtentReporter.logInfo("Clicked on element: " + elementName, "");
@@ -400,18 +403,7 @@ public class GeneralMethod extends ExtentReporter{
             throw new AssertionError("No Selected Index" + e.getMessage());
         }
     }
-    public static int getRandomNumber() {
-        Random random = new Random();
-        return random.nextInt(5) + 1; //random 1 to 5
-    }
-    public static int getThreeDigitRandomNumber() {
-        Random random = new Random();
-        return random.nextInt(152) + 1;
-    }
-    public static int getFiveDigitsRandomNumber() {
-        Random random = new Random();
-        return random.nextInt(999999) + 99999;
-    }
+
     public String getValue(WebElement locator){
         String val = null;
         try{

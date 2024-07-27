@@ -93,24 +93,4 @@ public class yamlReader {
             return null;
         }
     }
-
-    // public String getRemoteKPTN() {
-    //     try {
-    //         List<String> remoteKptnList = (List<String>) yamlData.get("remoteSendoutKPTN");
-
-    //         if (remoteKptnList == null || remoteKptnList.isEmpty()) {
-    //             System.out.println("No remote KPTN values available.");
-    //             return null;
-    //         }
-
-    //         String randomRemoteKptn = remoteKptnList.get(remoteKptnList.size() - 1);
-    //         remoteKptnList.remove(remoteKptnList.size() - 1);
-    //         saveYamlData();
-    //         return randomRemoteKptn;
-
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return null;
-    //     }
-    // }
 }

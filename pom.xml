@@ -27,7 +27,7 @@
         <loggerjava.version>5.0.1</loggerjava.version>
         <log4japi.version>2.23.1</log4japi.version>
         <log4jcore.version>2.23.1</log4jcore.version>
-        <preprod>https://mlshoppreprod.mlhuillier.com/</preprod>
+        <preprod>https://zhask.mlhuillier.com/</preprod>
         <qa>https://mlshopdev.mlhuillier.com/</qa>
         <homeUrl></homeUrl>
         <threads>1</threads>
@@ -124,6 +124,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>9.0.0</version>
         </dependency>
 
     </dependencies>

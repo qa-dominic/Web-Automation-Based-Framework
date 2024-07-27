@@ -3,18 +3,18 @@
 <suite name="SHOP" thread-count="6" >
     <listeners>
         <listener class-name="utilities.ExtentReport.ExtentReporter" />
-        <listener class-name="utilities.RetryAnalyzer.RetryTransformer"/>
+        <!-- <listener class-name="utilities.RetryAnalyzer.RetryTransformer"/> -->
     </listeners>
 
     <test name="SHOP">
         <parameter name="browser" value="chrome">
             <classes>
-                <class name="MLshopBuilders.actual.LoginT">
+                <class name="test_manager.test_sorter.LoginT">
                 </class>
-                <class name="MLshopBuilders.actual.Cart">
+                <!-- <class name="MLshopBuilders.actual.Cart">
                 </class>
                 <class name="MLshopBuilders.actual.Home">
-                </class>
+                </class> -->
             </classes>
         </parameter>
     </test>
