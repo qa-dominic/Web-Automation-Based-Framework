@@ -8,6 +8,7 @@ import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.Logger.LoggingUtils;
 import utilities.ApkPath.Apk;
+import utilities.PropertyReader.propertyReader;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -16,42 +17,47 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AppiumDriverManager {
-    private static final String IP_ADDRESS = "127.0.0.1";
-    private static final int PORT = 4723;
-    private static final String APP_ID = "com.mlhuillier.mlwallet";
-    private static final String APP_ACTIVITY = "MainActivity";
-    private static final String NODE_PATH = "C:\\Program Files\\nodejs\\node.exe";
-    private static final String APPIUM_PATH = "C:\\Users\\MONC20248261\\AppData\\Roaming\\npm\\node_modules\\appium";
-    private static final int IMPLICIT_WAIT_DURATION = 10;
-    private static final int EXPLICIT_WAIT_DURATION = 30;
 
-    private static AppiumDriverLocalService service;
-    private static AndroidDriver driver;
-    private static WebDriverWait wait;
+public class AppiumDriverManager {
+    private static AppiumDriverManager instance;
+    private AppiumDriverLocalService service;
+    private AndroidDriver driver;
+    private WebDriverWait wait;
+    private final propertyReader propertyReader = new propertyReader("config.properties");
 
     private AppiumDriverManager() {
-        // Private constructor to prevent instantiation
+
     }
 
-    public static void setupServer() {
+    public static AppiumDriverManager getInstance() {
+        if (instance == null) {
+            synchronized (AppiumDriverManager.class) {
+                if (instance == null) {
+                    instance = new AppiumDriverManager();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void setupServer() {
         if (service == null || !service.isRunning()) {
             service = new AppiumServiceBuilder()
-                    .usingDriverExecutable(new File(NODE_PATH))
-                    .withAppiumJS(new File(APPIUM_PATH))
-                    .withIPAddress(IP_ADDRESS)
-                    .usingPort(PORT)
+                    .usingDriverExecutable(new File(propertyReader.getProperty("node.path")))
+                    .withAppiumJS(new File(propertyReader.getProperty("appium.path")))
+                    .withIPAddress(propertyReader.getProperty("ip.address"))
+                    .usingPort(Integer.parseInt(propertyReader.getProperty("port")))
                     .build();
             service.start();
             LoggingUtils.info("Appium server started on " + service.getUrl());
         }
     }
 
-    public static void initializeDriver() {
+    public void initializeDriver() {
         if (driver == null) {
             setupServer();
             UiAutomator2Options options = new UiAutomator2Options()
-                    .setDeviceName("emulator-5554")
+                    .setDeviceName(propertyReader.getProperty("device.name"))
                     .setApp(Apk.API_DEMOS_APK.toString())
                     .setAutomationName("uiautomator2")
                     .setNoReset(false)
@@ -59,8 +65,10 @@ public class AppiumDriverManager {
 
             try {
                 driver = new AndroidDriver(new URL(service.getUrl().toString()), options);
-                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(IMPLICIT_WAIT_DURATION));
-                wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_DURATION));
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(
+                        Integer.parseInt(propertyReader.getProperty("implicit.wait.duration"))));
+                wait = new WebDriverWait(driver, Duration.ofSeconds(
+                        Integer.parseInt(propertyReader.getProperty("explicit.wait.duration"))));
                 LoggingUtils.info("AndroidDriver initialized successfully");
             } catch (MalformedURLException e) {
                 LoggingUtils.error("Failed to initialize AndroidDriver: " + e.getMessage());
@@ -69,7 +77,7 @@ public class AppiumDriverManager {
         }
     }
 
-    public static void stopServer() {
+    public void stopServer() {
         if (driver != null) {
             driver.quit();
             driver = null;
@@ -81,31 +89,32 @@ public class AppiumDriverManager {
         }
     }
 
-    public static void startActivity() {
+    public void startActivity() {
         Map<String, String> args = new HashMap<>();
-        args.put("component", String.format("%s/%s", APP_ID, APP_ACTIVITY));
-        LoggingUtils.info("Starting Activity: " + APP_ID + "/" + APP_ACTIVITY);
+        args.put("component", String.format("%s/%s",
+                propertyReader.getProperty("app.id"), propertyReader.getProperty("app.activity")));
+        LoggingUtils.info("Starting Activity: " + propertyReader.getProperty("app.id") + "/" + propertyReader.getProperty("app.activity"));
         driver.executeScript("mobile: startActivity", args);
     }
 
-    public static void clearApp() {
-        LoggingUtils.info("Clearing app: " + APP_ID);
-        driver.executeScript("mobile: clearApp", ImmutableMap.of("appId", APP_ID));
+    public void clearApp() {
+        LoggingUtils.info("Clearing app: " + propertyReader.getProperty("app.id"));
+        driver.executeScript("mobile: clearApp", ImmutableMap.of("appId", propertyReader.getProperty("app.id")));
     }
 
-    public static void resetApp() {
+    public void resetApp() {
         clearApp();
         startActivity();
     }
 
-    public static AndroidDriver getAndroidDriver() {
+    public AndroidDriver getAndroidDriver() {
         if (driver == null) {
             initializeDriver();
         }
         return driver;
     }
 
-    public static WebDriverWait getWait() {
+    public WebDriverWait getWait() {
         if (wait == null) {
             initializeDriver();
         }

@@ -24,7 +24,7 @@ public class propertyReader {
      * @param key
      * @return
      */
-    public String getproperty(String key) {
+    public String getProperty(String key) {
         String value = properties.getProperty(key);
         return value;
     }
